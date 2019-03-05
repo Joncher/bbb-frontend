@@ -18,4 +18,15 @@ class Adapter {
       }
     }).then(res => res.json())
   }
+
+  static postUser(username) {
+    return fetch(`${USERS_URL}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type":"application/json",
+        "Accept":"application/json"
+      },
+      body: JSON.stringify({username: username})
+    })
+  }
 }
