@@ -26,8 +26,8 @@ function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
       .then(json => {
-        console.log(json);
-        e.target.parentElement.remove
+        // console.log(json);
+        e.target.parentElement.remove()
       })
   }
   // else if (e.target.tagName === "IMG") {
@@ -51,9 +51,15 @@ function renderBooksToPage(searchData) {
 function renderSingleBookToPage(bookData){
   const searchResultsDiv = document.querySelector('#search-books')
   const bookDiv = document.createElement('div')
+  let bookThumbnail = ""
+  if (!!bookData.imageLinks) {
+    bookThumbnail = bookData.imageLinks.thumbnail
+  } else {
+    bookThumbnail = 'http://books.google.com/books/content?id=wdJwDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
+  }
   bookDiv.innerHTML =
   `
-  <img src=${bookData.imageLinks.thumbnail}>
+  <img src=${bookThumbnail}>
   <h4> ${bookData.title} </h4>
   <button> Add Book to Bookshelf </button>
   `
