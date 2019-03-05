@@ -2,15 +2,22 @@
 const BOOKS_URL = 'http://localhost:3000/books'
 const USERS_URL = 'http://localhost:3000/users'
 const myBookList = document.querySelector("#my-books-container")
-
+const myLoginPage = document.querySelector('#login-page')
 document.addEventListener('DOMContentLoaded', function(event){
 
+})
+
+myLoginPage.addEventListener('submit', function(e){
+  e.preventDefault()
+  const username = e.target.querySelector('input').value
+  Adapter.postUser(username)
 })
 
 Adapter.getBooks().then(books => {
     Book.all = books.map(book => new Book(book))
     for (book of Book.all) {
       myBookList.innerHTML += book.render()
+
     }
   })
 
@@ -28,7 +35,7 @@ function handleListClick(e) {
   // else if (e.target.tagName === "IMG") {
   //   showBook(e.target.)
   // }
-
+}
 //get data for searching books
 function getBooksData(searchInput){
   fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`)
@@ -88,10 +95,4 @@ function postNewBook(bookObj){
     },
     body: JSON.stringify(bookObj)
   })
-}
-
-function renderMyBooks(){
-  fetch('https://localhost3000.com/books')
-  .then(resp => resp.json())
-  .then(books => addBooksToList(books))
 }
