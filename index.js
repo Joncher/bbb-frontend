@@ -1,16 +1,15 @@
 //TODO: When user logs in, find or create user, assign user id to my book list container
-const BOOKS_URL = 'http://localhost:3000/books'
-const USERS_URL = 'http://localhost:3000/users'
 const myBookList = document.querySelector("#my-books-container")
 
 document.addEventListener('DOMContentLoaded', function(event){
 
 })
 
-Adapter.getBooks().then(books => {
-    Book.all = books.map(book => new Book(book))
-    for (book of Book.all) {
-      myBookList.innerHTML += book.render()
+//Render User's Books On Log In
+Adapter.getUserBooks(myBookList.dataset.userId).then(books => {
+    booksObjArr = books.map(book => new Book(book))
+    for (bookObj of booksObjArr) {
+      myBookList.innerHTML += bookObj.render()
     }
   })
 
@@ -22,12 +21,16 @@ function handleListClick(e) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
       .then(json => {
         console.log(json);
-        // e.target.parentElement.remove
+        e.target.parentElement.remove
       })
   }
   // else if (e.target.tagName === "IMG") {
   //   showBook(e.target.)
   // }
+}
+
+
+//John's Code
 
 //get data for searching books
 function getBooksData(searchInput){
