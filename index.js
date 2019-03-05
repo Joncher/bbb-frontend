@@ -1,6 +1,6 @@
 //TODO: When user logs in, find or create user, assign user id to my book list container
 const myBookList = document.querySelector("#my-books-container")
-
+const myLoginPage = document.querySelector('#login-page')
 document.addEventListener('DOMContentLoaded', function(event){
 
 })
@@ -11,7 +11,13 @@ Adapter.getUserBooks(myBookList.dataset.userId).then(books => {
     for (bookObj of booksObjArr) {
       myBookList.innerHTML += bookObj.render()
     }
-  })
+})
+
+myLoginPage.addEventListener('submit', function(e){
+  e.preventDefault()
+  const username = e.target.querySelector('input').value
+  Adapter.postUser(username)
+})
 
 myBookList.addEventListener('click', handleListClick)
 
@@ -28,9 +34,6 @@ function handleListClick(e) {
   //   showBook(e.target.)
   // }
 }
-
-
-//John's Code
 
 //get data for searching books
 function getBooksData(searchInput){
@@ -91,10 +94,4 @@ function postNewBook(bookObj){
     },
     body: JSON.stringify(bookObj)
   })
-}
-
-function renderMyBooks(){
-  fetch('https://localhost3000.com/books')
-  .then(resp => resp.json())
-  .then(books => addBooksToList(books))
 }
