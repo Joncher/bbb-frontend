@@ -20,8 +20,8 @@ function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
       .then(json => {
-        console.log(json);
-        e.target.parentElement.remove
+        // console.log(json);
+        e.target.parentElement.remove()
       })
   }
   // else if (e.target.tagName === "IMG") {
