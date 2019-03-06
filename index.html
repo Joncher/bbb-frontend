@@ -11,18 +11,25 @@
         <input type="text" name="username" placeholder="Username">
         <button type="submit" name="submit">Log-in</button>
       </form>
-
     </div>
-    <div id="my-books-container" data-user-id="3" >
+
+    <div id="my-books-container" >
       <!-- My Book List -->
       <h1>My Books</h1>
-      <input type="text" id="searchMyBooks" name="searchMyBooks" placeholder="Search My Books">
+      <form action="#" id="searchMyBooksForm">
+        <input type="text" id="searchMyBooksInput" placeholder="Search My Books">
+      </form>
+      <ul id='myBookShelf' data-user-id="1">
+      </ul>
     </div>
 
-     <div id = "search-books">
+    <div id="book-detail">
     </div>
-    <script type="text/javascript" src="adapter.js"></script>
-    <script type="text/javascript" src="book.js"></script>
-    <script type="text/javascript" src="index.js"></script>
+
+    <div id = "search-books">
+    </div>
   </body>
+  <script type="text/javascript" src="adapter.js"></script>
+  <script type="text/javascript" src="book.js"></script>
+  <script type="text/javascript" src="index.js"></script>
 </html>

@@ -24,6 +24,14 @@ class Book {
         <button class="btn btn-danger">Delete</button>
       </div>`)
   }
+
+  renderDetail() {
+    return (`
+      <div data-book-id="${this.id}">
+        <h1>${this.title}</h1>
+        <h2>${this.author}</h2>
+      </div>`)
+  }
 }
 
 Book.all = []

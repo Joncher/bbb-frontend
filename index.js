@@ -1,15 +1,16 @@
 //TODO: When user logs in, find or create user, assign user id to my book list container
-const myBookList = document.querySelector("#my-books-container")
+const myBookShelf = document.querySelector("#myBookShelf")
 const myLoginPage = document.querySelector('#login-page')
+const searchMyBooksForm = document.querySelector("#searchMyBooksForm")
 document.addEventListener('DOMContentLoaded', function(event){
 
 })
 
 //Render User's Books On Log In
-Adapter.getUserBooks(myBookList.dataset.userId).then(books => {
+Adapter.getUserBooks(myBookShelf.dataset.userId).then(books => {
     booksObjArr = books.map(book => new Book(book))
     for (bookObj of booksObjArr) {
-      myBookList.innerHTML += bookObj.render()
+      myBookShelf.innerHTML += bookObj.render()
     }
 })
 
@@ -19,9 +20,15 @@ myLoginPage.addEventListener('submit', function(e){
   Adapter.postUser(username)
 })
 
-myBookList.addEventListener('click', handleListClick)
+myBookShelf.addEventListener('click', handleListClick)
+searchMyBooksForm.addEventListener('input', handleSearchInput)
 
 //Event Handlers
+function handleSearchInput(event) {
+  const searchInputValue = event.target.value
+  // debugger
+}
+
 function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
@@ -29,10 +36,10 @@ function handleListClick(e) {
         // console.log(json);
         e.target.parentElement.remove()
       })
+  } else if (e.target.tagName === "H2") {
+    const bookDetail = document.querySelector("#book-detail")
+    bookDetail.innerHTML = Book.all.find(book => book.id === +e.target.parentElement.dataset.bookId).renderDetail()
   }
-  // else if (e.target.tagName === "IMG") {
-  //   showBook(e.target.)
-  // }
 }
 
 //get data for searching books
