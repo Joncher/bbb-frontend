@@ -17,8 +17,8 @@ myBookShelf.addEventListener('click', handleListClick)
 searchMyBooksForm.addEventListener('input', handleSearchInput)
 logoutButton.addEventListener('click', handleLogout)
 addBooksButton.addEventListener('click', handleAddBook)
+
 //Event Handlers
-<<<<<<< HEAD
 function handleSearchInput(e) {
   e.preventDefault()
   const searchInputValue = e.target.value
@@ -29,27 +29,13 @@ function handleSearchInput(e) {
 function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
-      .then(json => {
-        e.target.parentElement.remove()
-      })
-=======
-function handleListClick(e) {
-  if (e.target.classList.contains("btn-danger")) {
-    Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
     .then(json => {
-      // console.log(json);
       e.target.parentElement.remove()
     })
->>>>>>> ebb791572955f2f5f914c8ca1d2d4e13397657a3
   } else if (e.target.tagName === "H2") {
     const bookDetail = document.querySelector("#book-detail")
     bookDetail.innerHTML = Book.all.find(book => book.id === +e.target.parentElement.dataset.bookId).renderDetail()
   }
-}
-
-function handleSearchInput(e) {
-  e.preventDefault()
-  const searchInputValue = e.target.value
 }
 
 function handleLogout(e) {
