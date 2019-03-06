@@ -2,6 +2,8 @@
 const myBookShelf = document.querySelector("#myBookShelf")
 const myLoginPage = document.querySelector('#login-page')
 const searchMyBooksForm = document.querySelector("#searchMyBooksForm")
+const logoutButton = document.querySelector('#logout-button')
+const addBooksButton = document.querySelector('#add-books-button')
 document.addEventListener('DOMContentLoaded', function(event){
 
 })
@@ -23,27 +25,47 @@ myLoginPage.addEventListener('submit', function(e){
 
 myBookShelf.addEventListener('click', handleListClick)
 searchMyBooksForm.addEventListener('input', handleSearchInput)
-
+logoutButton.addEventListener('click', handleLogout)
+addBooksButton.addEventListener('click', handleAddBook)
 //Event Handlers
-function handleSearchInput(event) {
-  event.preventDefault()
-  const searchInputValue = event.target.value
-
-}
-
 function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
-      .then(json => {
-        // console.log(json);
-        e.target.parentElement.remove()
-      })
+    .then(json => {
+      // console.log(json);
+      e.target.parentElement.remove()
+    })
   } else if (e.target.tagName === "H2") {
     const bookDetail = document.querySelector("#book-detail")
     bookDetail.innerHTML = Book.all.find(book => book.id === +e.target.parentElement.dataset.bookId).renderDetail()
   }
 }
 
+function handleSearchInput(e) {
+  e.preventDefault()
+  const searchInputValue = e.target.value
+}
+
+function handleLogout(e) {
+  myBookShelf.innerHTML = ``
+  Book.all = []
+}
+
+function handleAddBook(){
+  const searchDiv = document.querySelector('#search-books')
+  searchDiv.innerHTML =
+  `
+  <form action="index.html" method="post">
+    <input type="text" id="searchMyBooksInput" placeholder="Search For A New Book">
+  </form>
+  `
+  document.querySelector('body').append(searchDiv)
+  searchDiv.addEventListener('submit', function(e) {
+    e.preventDefault()
+    const searchInput = e.target.firstElementChild.value
+    getBooksData(searchInput)
+  } )
+}
 //get data for searching books
 function getBooksData(searchInput){
   fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`)
@@ -70,12 +92,20 @@ function renderSingleBookToPage(bookData){
   `
   <img src=${bookThumbnail}>
   <h4> ${bookData.title} </h4>
-  <button> Add Book to Bookshelf </button>
   `
+  const addToBookShelfButton = document.createElement('button')
+  addToBookShelfButton.innerText = 'Add Book to Bookshelf'
+  const bookShelfIsbn = Book.all.map(book => book.isbn_10)
+  if (bookShelfIsbn.includes(bookData.industryIdentifiers[1].identifier)){
+    addToBookShelfButton.disabled = true
+    addToBookShelfButton.innerText = "Already Added"
+  }
+  bookDiv.append(addToBookShelfButton)
   bookDiv.querySelector('button').addEventListener('click', function(event) {
+      event.target.disabled = true
+      addToBookShelfButton.innerText = "Already Added"
       handleClick(event, bookData)
     })
-
   searchResultsDiv.append(bookDiv)
 }
 
@@ -91,8 +121,7 @@ function handleClick(e, bookData) {
     'thumbnail': bookData.imageLinks.thumbnail,
     'info_link': bookData.infoLink
   }
-
-  postNewBook(bookObj)
+  postNewBook(bookObj, myBookShelf.dataset.userId)
 
   //find or create by into database
   //add to our book list
@@ -100,13 +129,17 @@ function handleClick(e, bookData) {
   //
 }
 
-function postNewBook(bookObj){
-  fetch('http://localhost:3000/books',{
+function postNewBook(bookObj, userId){
+  fetch(`http://localhost:3000/books/${userId}`,{
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     },
     body: JSON.stringify(bookObj)
+  }).then(res => res.json()).then(book => {
+    const newBook = new Book(book)
+    myBookShelf.innerHTML += newBook.render()
+
   })
 }
