@@ -5,6 +5,12 @@ const searchMyBooksForm = document.querySelector("#searchMyBooksForm")
 document.addEventListener('DOMContentLoaded', function(event){
 
 })
+myLoginPage.addEventListener('submit', function(e){
+  e.preventDefault()
+  const username = e.target.querySelector('input').value.toLowerCase()
+  Adapter.postUser(username)
+  
+})
 
 //Render User's Books On Log In
 Adapter.getUserBooks(myBookShelf.dataset.userId).then(books => {
@@ -14,11 +20,6 @@ Adapter.getUserBooks(myBookShelf.dataset.userId).then(books => {
     }
 })
 
-myLoginPage.addEventListener('submit', function(e){
-  e.preventDefault()
-  const username = e.target.querySelector('input').value
-  Adapter.postUser(username)
-})
 
 myBookShelf.addEventListener('click', handleListClick)
 searchMyBooksForm.addEventListener('input', handleSearchInput)
