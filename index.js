@@ -2,6 +2,7 @@
 const myBookShelf = document.querySelector("#myBookShelf")
 const myLoginPage = document.querySelector('#login-page')
 const searchMyBooksForm = document.querySelector("#searchMyBooksForm")
+const logoutButton = document.querySelector('#logout-button')
 document.addEventListener('DOMContentLoaded', function(event){
 
 })
@@ -23,25 +24,29 @@ myLoginPage.addEventListener('submit', function(e){
 
 myBookShelf.addEventListener('click', handleListClick)
 searchMyBooksForm.addEventListener('input', handleSearchInput)
-
+logoutButton.addEventListener('click', handleLogout)
 //Event Handlers
-function handleSearchInput(event) {
-  event.preventDefault()
-  const searchInputValue = event.target.value
-
-}
-
 function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
-      .then(json => {
-        // console.log(json);
-        e.target.parentElement.remove()
-      })
+    .then(json => {
+      // console.log(json);
+      e.target.parentElement.remove()
+    })
   } else if (e.target.tagName === "H2") {
     const bookDetail = document.querySelector("#book-detail")
     bookDetail.innerHTML = Book.all.find(book => book.id === +e.target.parentElement.dataset.bookId).renderDetail()
   }
+}
+
+function handleSearchInput(e) {
+  e.preventDefault()
+  const searchInputValue = e.target.value
+}
+
+function handleLogout(e) {
+  myBookShelf.innerHTML = ``
+  Book.all = []
 }
 
 //get data for searching books

@@ -45,7 +45,6 @@ class Adapter {
     myBookShelf.dataset.userId = `${user.id}`
     Adapter.getUserBooks(myBookShelf.dataset.userId).then(books => {
         let booksObjArr = books.map(book => new Book(book))
-        debugger
         for (let bookObj of booksObjArr) {
           myBookShelf.innerHTML += bookObj.render()
         }
