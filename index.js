@@ -9,16 +9,16 @@ myLoginPage.addEventListener('submit', function(e){
   e.preventDefault()
   const username = e.target.querySelector('input').value.toLowerCase()
   Adapter.postUser(username)
-  
+
 })
 
 //Render User's Books On Log In
-Adapter.getUserBooks(myBookShelf.dataset.userId).then(books => {
-    booksObjArr = books.map(book => new Book(book))
-    for (bookObj of booksObjArr) {
-      myBookShelf.innerHTML += bookObj.render()
-    }
-})
+// Adapter.getUserBooks(myBookShelf.dataset.userId).then(books => {
+//     booksObjArr = books.map(book => new Book(book))
+//     for (bookObj of booksObjArr) {
+//       myBookShelf.innerHTML += bookObj.render()
+//     }
+// })
 
 
 myBookShelf.addEventListener('click', handleListClick)
@@ -26,8 +26,9 @@ searchMyBooksForm.addEventListener('input', handleSearchInput)
 
 //Event Handlers
 function handleSearchInput(event) {
+  event.preventDefault()
   const searchInputValue = event.target.value
-  // debugger
+
 }
 
 function handleListClick(e) {
