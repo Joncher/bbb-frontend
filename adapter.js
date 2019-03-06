@@ -37,6 +37,17 @@ class Adapter {
         "Accept":"application/json"
       },
       body: JSON.stringify({username: username})
+    }).then(res => res.json())
+    .then(user => this.changeMyContainerData(user, myBookList))
+  }
+
+  static changeMyContainerData(user, myBookList){
+    myBookList.dataset.userId = `${user.id}`
+    Adapter.getUserBooks(myBookList.dataset.userId).then(books => {
+        booksObjArr = books.map(book => new Book(book))
+        for (bookObj of booksObjArr) {
+          myBookList.innerHTML = bookObj.render()
+        }
     })
   }
 }

@@ -4,6 +4,12 @@ const myLoginPage = document.querySelector('#login-page')
 document.addEventListener('DOMContentLoaded', function(event){
 
 })
+myLoginPage.addEventListener('submit', function(e){
+  e.preventDefault()
+  const username = e.target.querySelector('input').value.toLowerCase()
+  Adapter.postUser(username)
+  
+})
 
 //Render User's Books On Log In
 Adapter.getUserBooks(myBookList.dataset.userId).then(books => {
@@ -13,11 +19,6 @@ Adapter.getUserBooks(myBookList.dataset.userId).then(books => {
     }
 })
 
-myLoginPage.addEventListener('submit', function(e){
-  e.preventDefault()
-  const username = e.target.querySelector('input').value
-  Adapter.postUser(username)
-})
 
 myBookList.addEventListener('click', handleListClick)
 
