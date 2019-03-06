@@ -11,39 +11,31 @@ myLoginPage.addEventListener('submit', function(e){
   e.preventDefault()
   const username = e.target.querySelector('input').value.toLowerCase()
   Adapter.postUser(username)
-
 })
-
-//Render User's Books On Log In
-// Adapter.getUserBooks(myBookShelf.dataset.userId).then(books => {
-//     booksObjArr = books.map(book => new Book(book))
-//     for (bookObj of booksObjArr) {
-//       myBookShelf.innerHTML += bookObj.render()
-//     }
-// })
-
 
 myBookShelf.addEventListener('click', handleListClick)
 searchMyBooksForm.addEventListener('input', handleSearchInput)
 logoutButton.addEventListener('click', handleLogout)
 addBooksButton.addEventListener('click', handleAddBook)
+
 //Event Handlers
+function handleSearchInput(e) {
+  e.preventDefault()
+  const searchInputValue = e.target.value
+  filteredBooks = Book.all.filter(book => book.title.toLowerCase().includes(searchInputValue));
+  myBookShelf.innerHTML = filteredBooks.map(book => book.render()).join('')
+}
+
 function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
     .then(json => {
-      // console.log(json);
       e.target.parentElement.remove()
     })
   } else if (e.target.tagName === "H2") {
     const bookDetail = document.querySelector("#book-detail")
     bookDetail.innerHTML = Book.all.find(book => book.id === +e.target.parentElement.dataset.bookId).renderDetail()
   }
-}
-
-function handleSearchInput(e) {
-  e.preventDefault()
-  const searchInputValue = e.target.value
 }
 
 function handleLogout(e) {
