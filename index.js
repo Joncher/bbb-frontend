@@ -4,6 +4,8 @@ const myLoginPage = document.querySelector('#login-page')
 const searchMyBooksForm = document.querySelector("#searchMyBooksForm")
 const logoutButton = document.querySelector('#logout-button')
 const addBooksButton = document.querySelector('#add-books-button')
+const bookSearch = document.querySelector('#search-books')
+let bookInfoArray = []
 document.addEventListener('DOMContentLoaded', function(event){
 
 })
@@ -67,37 +69,84 @@ function getBooksData(searchInput){
 
 function renderBooksToPage(searchData) {
   for (bookData of searchData) {
+
     renderSingleBookToPage(bookData.volumeInfo)
   }
 }
 
 function renderSingleBookToPage(bookData){
+
   const searchResultsDiv = document.querySelector('#search-books')
   const bookDiv = document.createElement('div')
+  const bookInformationDiv = document.createElement('div')
   let bookThumbnail = ""
+
   if (!!bookData.imageLinks) {
     bookThumbnail = bookData.imageLinks.thumbnail
   } else {
     bookThumbnail = 'http://books.google.com/books/content?id=wdJwDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
   }
-  bookDiv.innerHTML =
+  if (bookData.authors === undefined){
+    bookData.authors = ["N/A"]
+  }
+  if (bookData.title === undefined) {
+    bookData.title = "N/A"
+  }
+  if (bookData.description === undefined) {
+    bookData.description = "N/A"
+  }
+  if (bookData.averageRating === undefined){
+    bookData.averageRating = "N/A"
+  }
+
+  bookInformationDiv.innerHTML =
   `
   <img src=${bookThumbnail}>
   <h4> ${bookData.title} </h4>
   `
+  let bookInfo =
+  `
+  <h4>Title : ${bookData.title}</h4>
+  <h4>Author : ${bookData.authors[0]}</h4>
+  <h4>Description : ${bookData.description}</h4>
+  <h4>Average Rating : ${bookData.averageRating}</h4>
+  `
+  bookInfoArray.push(bookInfo)
+  bookDiv.dataset.index = bookInfoArray.length - 1
+  bookInformationDiv.addEventListener('click', showDetails)
+  function showDetails(){
+    if (event.target.tagName == "IMG"){
+
+      const previousDiv = event.target.parentElement.innerHTML
+      const parent = event.target.parentElement
+      parent.innerHTML = bookInfoArray[parent.parentElement.dataset.index]
+      const returnButton = document.createElement('button')
+      returnButton.innerText = "Return to Image"
+      returnButton.addEventListener('click', function(){
+        parent.innerHTML = previousDiv
+        // parent.querySelector('button').addEventListener('click', )
+      })
+      parent.append(returnButton)
+      }
+  }
   const addToBookShelfButton = document.createElement('button')
   addToBookShelfButton.innerText = 'Add Book to Bookshelf'
+
   const bookShelfIsbn = Book.all.map(book => book.isbn_10)
+
   if (bookShelfIsbn.includes(bookData.industryIdentifiers[1].identifier)){
     addToBookShelfButton.disabled = true
     addToBookShelfButton.innerText = "Already Added"
   }
-  bookDiv.append(addToBookShelfButton)
-  bookDiv.querySelector('button').addEventListener('click', function(event) {
+  const buttonDiv = document.createElement('div')
+  buttonDiv.append(addToBookShelfButton)
+  buttonDiv.querySelector('button').addEventListener('click', function addBooks() {
       event.target.disabled = true
       addToBookShelfButton.innerText = "Already Added"
       handleClick(event, bookData)
     })
+  bookDiv.append(bookInformationDiv)
+  bookDiv.append(buttonDiv)
   searchResultsDiv.append(bookDiv)
 }
 
