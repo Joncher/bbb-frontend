@@ -9,8 +9,7 @@ var Books = (function() {
 		},
 		transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ],
 		$books = $( '#bk-list > li > div.bk-book' ), booksCount = $books.length, currentbook = -1;
-		debugger
-
+		// debugger
 	function init() {
 		$books.each( function( i ) {
 
@@ -95,4 +94,4 @@ var Books = (function() {
 
 	return { init : init };
 
-})();
+});

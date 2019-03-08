@@ -129,7 +129,11 @@
     // if (this.id === "login-submit") {
     //     debugger
     // }
-    if(this.tagName === "INPUT") {
+    if (this.id === "add-books-button") {
+      var target = this.parentElement.action.split('html')[1]
+      $target = $(target)
+    }
+    else if(this.tagName === "INPUT") {
       // debugger
       var target = this.parentElement.parentElement.action.split('html')[1],
       $target = $(target);

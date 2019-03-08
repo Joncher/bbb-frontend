@@ -12,7 +12,7 @@ myLoginPage.addEventListener('click', function(e){
 })
 
 // myBookShelf.addEventListener('click', handleListClick)
-searchMyBooksForm.addEventListener('input', handleSearchInput)
+// searchMyBooksForm.addEventListener('input', handleSearchInput)
 logoutButton.addEventListener('click', handleLogout)
 addBooksButton.addEventListener('click', handleAddBook)
 
@@ -46,15 +46,18 @@ document.querySelector("#logoutForm").addEventListener('click', function(event) 
 
   //Allow Scrolling
   document.querySelector("body").style.overflow = "hidden"
+
+  //Clear Search
+  document.querySelector("div.features-content").innerHTML = '<div class="features-list block-1-3 block-s-1-2 block-tab-full group"></div>'
 })
 
 //Event Handlers
-function handleSearchInput(e) {
-  e.preventDefault()
-  const searchInputValue = e.target.value
-  filteredBooks = Book.all.filter(book => book.title.toLowerCase().includes(searchInputValue));
-  myBookShelf.innerHTML = filteredBooks.map(book => book.render()).join('')
-}
+// function handleSearchInput(e) {
+//   e.preventDefault()
+//   const searchInputValue = e.target.value
+//   filteredBooks = Book.all.filter(book => book.title.toLowerCase().includes(searchInputValue));
+//   myBookShelf.innerHTML = filteredBooks.map(book => book.render()).join('')
+// }
 
 function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
@@ -76,26 +79,47 @@ function handleLogout(e) {
 function handleAddBook(){
   const searchDiv = document.querySelector('#search-books')
   searchDiv.innerHTML =
-  `
-  <form action="index.html" method="post">
+  (`<form>
     <input type="text" id="searchMyBooksInput" placeholder="Search For A New Book">
-  </form>
-  `
-  document.querySelector('body').append(searchDiv)
+  </form>`)
+
   searchDiv.addEventListener('submit', function(e) {
     e.preventDefault()
     const searchInput = e.target.firstElementChild.value
     getBooksData(searchInput)
   } )
 }
+
 //get data for searching books
 function getBooksData(searchInput){
   fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`)
   .then(resp => resp.json())
-  .then(search => renderBooksToPage(search.items))
+  .then(search => {
+    renderBooksToPage(search.items)
+
+    document.querySelector("div.features-list").addEventListener('click', event => {
+      if (event.target.tagName === "BUTTON") {
+        const bookObj = {
+          'title': event.target.dataset.title,
+          'author': event.target.dataset.author,
+          'publisher': event.target.dataset.publisher,
+          'description': event.target.dataset.description,
+          'isbn_10': event.target.dataset.isbn10,
+          'average_review': event.target.dataset.review,
+        }
+
+
+        event.target.disabled = true
+        event.target.innerText = "Already Added"
+
+        handleClick(event, bookObj)
+      }
+    })
+  })
 }
 
 function renderBooksToPage(searchData) {
+  document.querySelector("div.features-list").innerHTML = ""
   for (bookData of searchData) {
     renderSingleBookToPage(bookData.volumeInfo)
   }
@@ -103,47 +127,108 @@ function renderBooksToPage(searchData) {
 
 function renderSingleBookToPage(bookData){
   const searchResultsDiv = document.querySelector('#search-books')
-  const bookDiv = document.createElement('div')
+  // const bookDiv = document.createElement('div')
+  const bookDiv = document.querySelector("div.features-list")
   let bookThumbnail = ""
   if (!!bookData.imageLinks) {
     bookThumbnail = bookData.imageLinks.thumbnail
   } else {
     bookThumbnail = 'http://books.google.com/books/content?id=wdJwDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
   }
-  bookDiv.innerHTML =
-  `
-  <img src=${bookThumbnail}>
-  <h4> ${bookData.title} </h4>
-  `
-  const addToBookShelfButton = document.createElement('button')
-  addToBookShelfButton.innerText = 'Add Book to Bookshelf'
+
+  // addToBookShelfButton.addEventListener('click', function() {
+  //     event.target.disabled = true
+  //     button.innerText = "Already Added"
+  //     handleClick(event, bookData)
+  //   })
+
+
+
+  // const bookShelfIsbn = Book.all.map(book => book.isbn_10)
+  // // debugger
+  // if (bookShelfIsbn.includes(bookData.industryIdentifiers[1].identifier)){
+  //
+  //   addToBookShelfButton.disabled = true
+  //   addToBookShelfButton.innerText = "Already Added"
+  // }
+
+
+
+
+
+  // bookDiv.querySelector("div.service-content").append(addToBookShelfButton)
+  // bookDiv.querySelector('button').addEventListener('click', function(event) {
+  // addToBookShelfButton.addEventListener('click', function(event) {
+  //   // debugger
+  //   event.target.disabled = true
+  //   addToBookShelfButton.innerText = "Already Added"
+  //   handleClick(event, bookData)
+  // })
+
+  const bookAuthor = bookData.authors ? bookData.authors[0] : "";
+  let addButton
   const bookShelfIsbn = Book.all.map(book => book.isbn_10)
+  // debugger
   if (bookShelfIsbn.includes(bookData.industryIdentifiers[1].identifier)){
-    addToBookShelfButton.disabled = true
-    addToBookShelfButton.innerText = "Already Added"
+
+    addButton = (`
+      <button disabled data-title="${bookData.title}"
+            data-author="${bookAuthor}"
+            data-publisher="${bookData.publisher}"
+            data-description="${bookData.description}"
+            data-isbn10="${bookData.industryIdentifiers[1].identifier}"
+            data-review="${bookData.averageRating}">
+            Already Added
+      </button>`)
+  } else {
+    addButton = (`
+      <button data-title="${bookData.title}"
+            data-author="${bookAuthor}"
+            data-publisher="${bookData.publisher}"
+            data-description="${bookData.description}"
+            data-isbn10="${bookData.industryIdentifiers[1].identifier}"
+            data-review="${bookData.averageRating}">
+            Add to Bookshelf
+      </button>`)
   }
-  bookDiv.append(addToBookShelfButton)
-  bookDiv.querySelector('button').addEventListener('click', function(event) {
-      event.target.disabled = true
-      addToBookShelfButton.innerText = "Already Added"
-      handleClick(event, bookData)
-    })
-  searchResultsDiv.append(bookDiv)
+
+  bookDiv.innerHTML +=
+  (`<div class="bgrid feature">
+
+      <img src=${bookThumbnail}>
+
+      <div class="service-content">
+
+        <h3 class="h05">${bookData.title}</h3>
+        ${addButton}
+      </div>
+
+  </div>`)
+  // document.querySelectorAll("div.service-content > button").forEach(button => {
+  //   button.addEventListener('click', function(event) {
+  //     event.target.disabled = true
+  //     button.innerText = "Already Added"
+  //     // debugger
+  //     handleClick(event, bookData)
+  //   })
+  // })
+  // searchResultsDiv.append(bookDiv)
 }
 
 function handleClick(e, bookData) {
-  const bookObj = {
-    'title': bookData.title,
-    'author': bookData.authors[0],
-    'publisher': bookData.publisher,
-    'description': bookData.description,
-    'isbn_10': bookData.industryIdentifiers[1].identifier,
-    'page_count': bookData.pageCount,
-    'average_review': bookData.averageRating,
-    'thumbnail': bookData.imageLinks.thumbnail,
-    'info_link': bookData.infoLink
-  }
-  postNewBook(bookObj, myBookShelf.dataset.userId)
+  // const bookAuthor = bookData.authors ? bookData.authors[0] : "";
+  // const bookObj = {
+  //   'title': bookData.title,
+  //   'author': bookAuthor,
+  //   'publisher': bookData.publisher,
+  //   'description': bookData.description,
+  //   'isbn_10': bookData.industryIdentifiers[1].identifier,
+  //   'page_count': bookData.pageCount,
+  //   'average_review': bookData.averageRating,
+  //   'thumbnail': bookData.imageLinks.thumbnail,
+  //   'info_link': bookData.infoLink
+  // }
+  postNewBook(bookData, myBookShelf.dataset.userId)
 
   //find or create by into database
   //add to our book list
@@ -162,6 +247,6 @@ function postNewBook(bookObj, userId){
   }).then(res => res.json()).then(book => {
     const newBook = new Book(book)
     myBookShelf.innerHTML += newBook.render()
-
+    Books().init()
   })
 }

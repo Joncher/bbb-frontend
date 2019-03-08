@@ -59,8 +59,9 @@ class Book {
 
   renderDetail() {
     return (`
-      <h1>${this.title}</h1>
-      <h2>${this.author}</h2>`)
+      <h3>${this.title}</h3>
+      <h4>${this.author}</h4>
+      <h4>${this.publisher}</h4>`)
   }
 }
 
