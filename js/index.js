@@ -39,6 +39,7 @@ document.querySelector("#login-submit").addEventListener('click', function(event
 document.querySelector("#logoutForm").addEventListener('click', function(event) {
   document.querySelector("#loginForm").style.display = "block"
   document.querySelector("#logoutForm").style.display = "none"
+  document.querySelector("#login-page h5").innerText = "Welcome to BBB"
 
   //Disable Nav Links
   document.querySelector("#bookListNavLink").href = ""
@@ -121,7 +122,9 @@ function getBooksData(searchInput){
 function renderBooksToPage(searchData) {
   document.querySelector("div.features-list").innerHTML = ""
   for (bookData of searchData) {
-    renderSingleBookToPage(bookData.volumeInfo)
+    if(isBookValid(bookData.volumeInfo)) {
+      renderSingleBookToPage(bookData.volumeInfo)
+    }
   }
 }
 
@@ -169,6 +172,7 @@ function renderSingleBookToPage(bookData){
   let addButton
   const bookShelfIsbn = Book.all.map(book => book.isbn_10)
   // debugger
+
   if (bookShelfIsbn.includes(bookData.industryIdentifiers[1].identifier)){
 
     addButton = (`
@@ -249,4 +253,9 @@ function postNewBook(bookObj, userId){
     myBookShelf.innerHTML += newBook.render()
     Books().init()
   })
+}
+
+function isBookValid(volumeInfo) {
+  return !!volumeInfo.industryIdentifiers &&
+  !!volumeInfo.industryIdentifiers[1]
 }

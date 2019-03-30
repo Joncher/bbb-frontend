@@ -47,7 +47,6 @@ class Book {
           <div class="bk-right"></div>
           <div class="bk-left">
             <h2>
-              <span>${this.author}</span>
               <span>${this.title}</span>
             </h2>
           </div>

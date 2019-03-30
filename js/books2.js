@@ -19,12 +19,12 @@ var Books = (function() {
 				$page = $book.children( 'div.bk-page' ),
 				$content = $page.children( 'div.bk-content' ), current = 0;
 
-			if( i < booksCount / 2 ) {
+			// if( i < booksCount / 2 ) {
 				$parent.css( 'z-index', i ).data( 'stackval', i );
-			}
-			else {
-				$parent.css( 'z-index', booksCount - 1 - i ).data( 'stackval', booksCount - 1 - i );
-			}
+			// }
+			// else {
+			// 	$parent.css( 'z-index', booksCount - i ).data( 'stackval', booksCount - i );
+			// }
 
 			$book.on( 'click', function() {
 
