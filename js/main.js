@@ -202,24 +202,7 @@
 
  	/*---------------------------------------------------- */
 	/*	Modal Popup
-	------------------------------------------------------ */
-
-    $('.video-link a').magnificPopup({
-
-       type:'inline',
-       fixedContentPos: false,
-       removalDelay: 200,
-       showCloseBtn: false,
-       mainClass: 'mfp-fade'
-
-    });
-
-    $(document).on('click', '.close-popup', function (e) {
-    		e.preventDefault();
-    		$.magnificPopup.close();
-    });
-
-
+	---------------------------------------------
  	/*----------------------------------------------------- */
   	/* Back to top
    ------------------------------------------------------- */

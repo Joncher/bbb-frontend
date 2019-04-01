@@ -57,10 +57,11 @@ class Book {
   }
 
   renderDetail() {
+    // debugger
     return (`
       <h3>${this.title}</h3>
       <h4>${this.author}</h4>
-      <h4>${this.publisher}</h4>`)
+      <h4>${this.publisher !== "undefined" ? this.publisher : ""}</h4>`)
   }
 }
 

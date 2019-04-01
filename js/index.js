@@ -52,24 +52,12 @@ document.querySelector("#logoutForm").addEventListener('click', function(event) 
   document.querySelector("div.features-content").innerHTML = '<div class="features-list block-1-3 block-s-1-2 block-tab-full group"></div>'
 })
 
-//Event Handlers
-// function handleSearchInput(e) {
-//   e.preventDefault()
-//   const searchInputValue = e.target.value
-//   filteredBooks = Book.all.filter(book => book.title.toLowerCase().includes(searchInputValue));
-//   myBookShelf.innerHTML = filteredBooks.map(book => book.render()).join('')
-// }
-
 function handleListClick(e) {
   if (e.target.classList.contains("btn-danger")) {
     Adapter.deleteUserBook(e.target.parentElement.parentElement.dataset.userId, e.target.parentElement.dataset.bookId)
     .then(json => {
       e.target.parentElement.remove()
     })
-  // } else if (e.target.tagName === "H2") {
-  //   const bookDetail = document.querySelector("div.bk-content-current p")
-  //   // bookDetail.innerHTML = Book.all.find(book => book.id === +e.target.parentElement.parentElement.dataset.bookId).renderDetail()
-  // }
   }
 }
 function handleLogout(e) {
@@ -112,7 +100,7 @@ function getBooksData(searchInput){
 
         event.target.disabled = true
         event.target.innerText = "Already Added"
-
+        // debugger
         handleClick(event, bookObj)
       }
     })
@@ -138,35 +126,6 @@ function renderSingleBookToPage(bookData){
   } else {
     bookThumbnail = 'http://books.google.com/books/content?id=wdJwDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
   }
-
-  // addToBookShelfButton.addEventListener('click', function() {
-  //     event.target.disabled = true
-  //     button.innerText = "Already Added"
-  //     handleClick(event, bookData)
-  //   })
-
-
-
-  // const bookShelfIsbn = Book.all.map(book => book.isbn_10)
-  // // debugger
-  // if (bookShelfIsbn.includes(bookData.industryIdentifiers[1].identifier)){
-  //
-  //   addToBookShelfButton.disabled = true
-  //   addToBookShelfButton.innerText = "Already Added"
-  // }
-
-
-
-
-
-  // bookDiv.querySelector("div.service-content").append(addToBookShelfButton)
-  // bookDiv.querySelector('button').addEventListener('click', function(event) {
-  // addToBookShelfButton.addEventListener('click', function(event) {
-  //   // debugger
-  //   event.target.disabled = true
-  //   addToBookShelfButton.innerText = "Already Added"
-  //   handleClick(event, bookData)
-  // })
 
   const bookAuthor = bookData.authors ? bookData.authors[0] : "";
   let addButton
@@ -208,36 +167,15 @@ function renderSingleBookToPage(bookData){
       </div>
 
   </div>`)
-  // document.querySelectorAll("div.service-content > button").forEach(button => {
-  //   button.addEventListener('click', function(event) {
-  //     event.target.disabled = true
-  //     button.innerText = "Already Added"
-  //     // debugger
-  //     handleClick(event, bookData)
-  //   })
-  // })
-  // searchResultsDiv.append(bookDiv)
+
 }
 
 function handleClick(e, bookData) {
-  // const bookAuthor = bookData.authors ? bookData.authors[0] : "";
-  // const bookObj = {
-  //   'title': bookData.title,
-  //   'author': bookAuthor,
-  //   'publisher': bookData.publisher,
-  //   'description': bookData.description,
-  //   'isbn_10': bookData.industryIdentifiers[1].identifier,
-  //   'page_count': bookData.pageCount,
-  //   'average_review': bookData.averageRating,
-  //   'thumbnail': bookData.imageLinks.thumbnail,
-  //   'info_link': bookData.infoLink
-  // }
-  postNewBook(bookData, myBookShelf.dataset.userId)
+  const list = document.querySelector("div.features-list")
+  const listClone = document.querySelector("div.features-list").cloneNode(true)
+  list.parentNode.replaceChild(listClone, list)
 
-  //find or create by into database
-  //add to our book list
-  //strike through button and say added to book list
-  //
+  postNewBook(bookData, myBookShelf.dataset.userId)
 }
 
 function postNewBook(bookObj, userId){
@@ -249,6 +187,7 @@ function postNewBook(bookObj, userId){
     },
     body: JSON.stringify(bookObj)
   }).then(res => res.json()).then(book => {
+    // debugger
     const newBook = new Book(book)
     myBookShelf.innerHTML += newBook.render()
     Books().init()
@@ -256,6 +195,8 @@ function postNewBook(bookObj, userId){
 }
 
 function isBookValid(volumeInfo) {
+  // debugger
   return !!volumeInfo.industryIdentifiers &&
-  !!volumeInfo.industryIdentifiers[1]
+  !!volumeInfo.industryIdentifiers[1] &&
+  volumeInfo.title.length < 50
 }
