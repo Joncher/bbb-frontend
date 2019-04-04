@@ -1,40 +1,180 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="stylesheet/index.css">
-    <title>BBB</title>
-  </head>
-  <body>
-    <div id="login-page">
-      <form action="index.html" method="post">
-        <input type="text" name="username" placeholder="Username">
-        <button type="submit" name="submit">Log-in</button>
+<!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+
+   <!--- basic page needs
+   ================================================== -->
+   <meta charset="utf-8">
+	<title>BBB</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+   <!-- mobile specific metas
+   ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+ 	<!-- CSS
+   ================================================== -->
+   <link rel="stylesheet" href="css/base.css">
+   <link rel="stylesheet" href="css/main.css">
+   <link rel="stylesheet" href="css/vendor.css">
+
+   <link rel="stylesheet" type="text/css" href="css/default.css" />
+   <link rel="stylesheet" type="text/css" href="css/component2.css" />
+   <!-- script
+   ================================================== -->
+	<script src="js/modernizr.js"></script>
+  <script src="js/modernizr.custom.js"></script>
+   <!-- favicons
+	================================================== -->
+	<!-- <link rel="icon" type="image/png" href="favicon.png"> -->
+
+</head>
+
+<body id="top" style="overflow:hidden">
+
+	<!-- header
+   ================================================== -->
+   <header>
+
+   	<div class="row">
+
+   		<div class="logo">
+	         <a class="smoothscroll" href="#intro">BBB</a>
+	      </div>
+
+	   	<nav id="main-nav-wrap">
+				<ul class="main-navigation">
+					<li class="current"><a class="smoothscroll"  href="#intro" title="">Home</a></li>
+					<li><a id="bookListNavLink" class="smoothscroll"  href="" title="">My Bookshelf</a></li>
+					<li><a id="bookSearchNavLink" class="smoothscroll"  href="" title="">Search</a></li>
+				</ul>
+			</nav>
+
+			<a class="menu-toggle" href="#"><span>Menu</span></a>
+
+   	</div>
+
+   </header> <!-- /header -->
+
+	<!-- intro section
+   ================================================== -->
+   <section id="intro">
+
+   	<div class="shadow-overlay"></div>
+
+   	<div class="intro-content">
+   		<div class="row">
+
+   			<div id="login-page" class="col-twelve">
+
+	   			<h5>Hello welcome to BBB.</h5>
+	   			<h1>Our awesome app will make finding books a lot easier.</h1>
+
+	   			<!-- <a class="button stroke smoothscroll" href="#process" title="">Sign Up</a> -->
+          <form id="loginForm" class="" action="#process">
+            <span class="input input--shoko">
+    					<input class="input__field input__field--shoko" type="text" id="input-4" />
+    					<label class="input__label input__label--shoko" for="input-4">
+    						<span class="input__label-content input__label-content--shoko">Enter Username</span>
+    					</label>
+              <input id="login-submit" class="button stroke smoothscroll" type="submit" name="" value="Log In">
+    					<svg class="graphic graphic--shoko" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
+    						<path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"/>
+    						<path d="M0,2.5c0,0,298.666,0,399.333,0C448.336,2.5,513.994,13,597,13c77.327,0,135-10.5,200.999-10.5c95.996,0,402.001,0,402.001,0"/>
+    					</svg>
+    				</span>
+          </form>
+
+          <form id="logoutForm" class="" action="#intro" style="display:none">
+            <span>
+              <input id="logout-submit" class="button stroke smoothscroll" type="submit" name="" value="Log Out">
+            </span>
+          </form>
+	   		</div>
+   		</div>
+   	</div>
+
+   </section> <!-- /intro -->
+
+
+   <!-- Process Section
+   ================================================== -->
+   <section id="process">
+
+   	<div class="row section-intro">
+   		<div class="col-twelve with-bottom-line">
+
+   			<h5>My Bookshelf</h5>
+        <!-- <div class="">
+          <form action="#process" id="searchMyBooksForm" onsubmit="return false;">
+            <input type="search" id="searchMyBooksInput" placeholder="Search My Books">
+          </form>
+        </div> -->
+   		</div>
+   	</div>
+
+   	<div class="row process-content">
+
+      <ul id="bk-list" class="bk-list clearfix">
+			</ul>
+
+      <div class="bookshelf"></div>
+
+      <!-- <button id='add-books-button' type="button" name="add">Add Books</button> -->
+      <form action="#features" >
+        <input id="add-books-button" class="button smoothscroll" type="submit" name="" value="Add Books">
       </form>
-    </div>
-    <div >
-      <button id="logout-button" type="button" name="Logout">Logout</button>
-    </div>
+   	</div> <!-- /process-content -->
 
-    <div id="my-books-container" >
-      <!-- My Book List -->
-      <h1>My Books</h1>
-      <button id='add-books-button' type="button" name="add">Add Books</button>
-      <form action="#" id="searchMyBooksForm">
-        <input type="search" id="searchMyBooksInput" placeholder="Search My Books">
-      </form>
-      <ul id='myBookShelf' data-user-id="">
-      </ul>
-    </div>
+   </section> <!-- /process-->
 
-    <div id="book-detail">
-    </div>
 
-    <div id = "search-books">
-    </div>
+   <!-- features Section
+   ================================================== -->
+	<section id="features">
 
-  </body>
-  <script type="text/javascript" src="adapter.js"></script>
-  <script type="text/javascript" src="book.js"></script>
-  <script type="text/javascript" src="index.js"></script>
+		<div class="row section-intro">
+   		<div class="col-twelve with-bottom-line">
+
+   			<h5>Search For New Books</h5>
+        <div id="search-books"></div>
+   		</div>
+   	</div>
+
+   	<div class="row features-content">
+
+   		<div class="features-list block-1-3 block-s-1-2 block-tab-full group">
+
+	    </div> <!-- features-list -->
+
+   	</div> <!-- features-content -->
+
+	</section> <!-- /features -->
+
+   <div id="preloader">
+    	<div id="loader"></div>
+   </div>
+
+   <!-- Java Script
+   ================================================== -->
+   <script src="js/jquery-1.11.3.min.js"></script>
+   <script src="js/jquery-migrate-1.2.1.min.js"></script>
+   <script src="js/plugins.js"></script>
+   <script>
+    	// $(function() {
+      //
+    	// 	Books.init();
+      //
+    	// });
+   </script>
+   <script src="js/books2.js"></script>
+   <script type="text/javascript" src="adapter.js"></script>
+   <script type="text/javascript" src="book.js"></script>
+   <script type="text/javascript" src="js/index.js"></script>
+   <script src="js/main.js"></script>
+</body>
+
 </html>

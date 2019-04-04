@@ -38,16 +38,22 @@ class Adapter {
       },
       body: JSON.stringify({username: username})
     }).then(res => res.json())
-    .then(user => this.changeMyContainerData(user, myBookShelf))
+    .then(user => {
+      this.changeMyContainerData(user, myBookShelf)
+
+    })
   }
 
   static changeMyContainerData(user, myBookShelf){
     myBookShelf.dataset.userId = `${user.id}`
     Adapter.getUserBooks(myBookShelf.dataset.userId).then(books => {
+      // debugger
         let booksObjArr = books.map(book => new Book(book))
         for (let bookObj of booksObjArr) {
           myBookShelf.innerHTML += bookObj.render()
         }
+
+        Books().init()
     })
   }
 }

@@ -16,21 +16,52 @@ class Book {
 
     Book.all.push(this)
   }
-
+  //
+  // render() {
+  //   return (`
+  //     <div class="" data-book-id="${this.id}">
+  //       <h2>${this.title}</h2>
+  //       <button class="btn btn-danger">Delete</button>
+  //     </div>`)
+  // }
   render() {
     return (`
-      <div class="" data-book-id="${this.id}">
-        <h2>${this.title}</h2>
-        <button class="btn btn-danger">Delete</button>
-      </div>`)
+      <li>
+        <div class="bk-book book-1" data-book-id="${this.id}" >
+          <div class="bk-front">
+            <div class="bk-cover-back"></div>
+            <div class="bk-cover">
+              <h2>
+                <span>${this.author}</span>
+                <span>${this.title}</span>
+              </h2>
+            </div>
+          </div>
+          <div class="bk-page">
+            <div class="bk-content bk-content-current">
+              ${this.renderDetail()}
+            </div>
+          </div>
+          <div class="bk-back">
+          </div>
+          <div class="bk-right"></div>
+          <div class="bk-left">
+            <h2>
+              <span>${this.title}</span>
+            </h2>
+          </div>
+          <div class="bk-top"></div>
+          <div class="bk-bottom"></div>
+        </div>
+      </li>`)
   }
 
   renderDetail() {
+    // debugger
     return (`
-      <div data-book-id="${this.id}">
-        <h1>${this.title}</h1>
-        <h2>${this.author}</h2>
-      </div>`)
+      <h3>${this.title}</h3>
+      <h4>${this.author}</h4>
+      <h4>${this.publisher !== "undefined" ? this.publisher : ""}</h4>`)
   }
 }
 
