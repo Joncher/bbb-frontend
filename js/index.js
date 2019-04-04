@@ -174,7 +174,7 @@ function handleClick(e, bookData) {
   const list = document.querySelector("div.features-list")
   const listClone = document.querySelector("div.features-list").cloneNode(true)
   list.parentNode.replaceChild(listClone, list)
-
+  // debugger
   postNewBook(bookData, myBookShelf.dataset.userId)
 }
 
